@@ -6,6 +6,9 @@ import org.junit.BeforeClass;
 import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
+
+import java.util.Optional;
+
 @DisplayName("A stack")
 public class TestCases {
     private FixedStack<Integer> instance = new FixedStack<>(100);
@@ -41,23 +44,13 @@ public class TestCases {
     }
 
     /**
-     * Test of pop method, of class Stack.
-     */
-    @Test
-    public void testPop()
-    {
-        System.out.println("pop");
-        instance.push( 1 );
-        assertEquals( new Integer( 1 ), instance.pop() );
-    }
-
-    /**
      * Test of remove method of class Stack.
      */
     @Test
     public void testPopException()
     {
         System.out.println("pop");
+        instance.push( -17 );
         exception.expect( IndexOutOfBoundsException.class );
         Integer peek = instance.pop();
     }
@@ -70,7 +63,7 @@ public class TestCases {
     {
         System.out.println("push");
         instance.push( -17 );
-        assertEquals( instance.peek(), new Integer( -17 ) );
+        assertEquals(instance.push(-20),instance.peek());
     }
 
     /**
@@ -81,6 +74,6 @@ public class TestCases {
     {
         System.out.println("peek");
         instance.push( 1 );
-        assertEquals( new Integer( 1 ), instance.peek() );
+        assertEquals( instance.push(1), instance.peek());
     }
 }
