@@ -1,48 +1,89 @@
 package org.example;
 
-import java.util.Stack;
-
-public class FixedStack<T> extends Stack<T> {
+public class FixedStack<T> implements StackInterface{
+    private FixedStack<T> previous;
+    private T value;
     private int maxSize;
 
-    public FixedStack(int size) {
-        super();
+       FixedStack() {
+    }
+
+    public FixedStack(T value) {
+        this.value = value;
+    }
+        FixedStack(FixedStack<T> previous, T value, int size) {
+        this.previous = previous;
+        this.value = value;
         this.maxSize = size;
     }
 
     @Override
-    public T push(T object) {
+    public Object push(Object value) {
         if (isFull()) {
             resize();
         }
-        return super.push(object);
+                if (this.value == null)
+            this.value = (T) value;
+        else {
+            this.previous = new FixedStack<T>(this.previous, this.value, this.maxSize);
+            this.value = (T) value;
+        }
+
+        return this.value;
     }
 
     @Override
-    public synchronized T peek() {
-        return super.peek();
+    public Object pop() {
+                if (this.isEmpty())
+            throw new IllegalArgumentException("Stack is empty");
+
+        T top = this.value;
+        this.value = this.previous.value;
+        this.previous = this.previous.previous;
+
+        return top;
     }
 
     @Override
-    public synchronized T pop() {
-        return super.pop();
+    public Object peek() {
+        return this.value;
     }
 
     @Override
-    public synchronized boolean isEmpty() {
-        return super.isEmpty();
+    public boolean isEmpty() {
+        return this.previous == null;
     }
 
     @Override
-    public synchronized int size() {
-        return super.size();
+    public int size() {
+        return this.isEmpty() ? 0 : 1 + this.previous.size();
     }
 
+    @Override
+    public int search(Object o) {
+                int count = 1;
+
+        for (FixedStack<T> stack = this; !stack.isEmpty(); stack = stack.previous) {
+            if (stack.value.equals(o))
+                return count;
+            count++;
+        }
+
+        return -1;
+    }
+
+    @Override
     public boolean isFull() {
         return (this.size() == maxSize);
     }
-
+    @Override
     public int resize(){
         return maxSize*2;
+    }
+    @Override
+    public String toString() {
+        if (!this.isEmpty())
+            return this.previous + " <- " + this.value;
+        return this.value != null ? String.valueOf(this.value) : "";
     }
 }

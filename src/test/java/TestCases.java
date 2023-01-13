@@ -1,9 +1,13 @@
 import org.example.FixedStack;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+
 import static org.junit.Assert.*;
+
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
@@ -11,6 +15,16 @@ import java.util.Optional;
 
 @DisplayName("A stack")
 public class TestCases {
+
+//    @BeforeAll
+//    static void setup() {
+//        log.info("@BeforeAll - executes once before all test methods in this class");
+//    }
+//
+//    @BeforeEach
+//    void init() {
+//        log.info("@BeforeEach - executes before each test method in this class");
+//    }
     private FixedStack<Integer> instance = new FixedStack<>(100);
 
     @BeforeClass
@@ -52,7 +66,7 @@ public class TestCases {
         System.out.println("pop");
         instance.push( -17 );
         exception.expect( IndexOutOfBoundsException.class );
-        Integer peek = instance.pop();
+        Integer peek = (Integer) instance.pop();
     }
 
     /**
